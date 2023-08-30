@@ -5,7 +5,7 @@ from tensorflow.keras import layers
 class SelfAttention_Conv2D(keras.layers.Layer):
     def __init__(self, filters=None, num_heads=None, gamma=0.01, activation='linear', return_attention_scores=False, trainable=True):
         super().__init__(trainable=trainable)
-        self.gamma = tf.Variable(initial_value=gamma, trainable=True, name='gamma')
+        self.gamma = gamma
         self.f = None
         self.g = None
         self.h = None
@@ -13,7 +13,7 @@ class SelfAttention_Conv2D(keras.layers.Layer):
         self.attention = None
         self.num_heads = num_heads
         self.c = filters
-        self.activation = activation
+        self.activation = tf.keras.activations.get(activation)
         self.scores = return_attention_scores
 
     def build(self, input_shape):
@@ -54,3 +54,9 @@ class SelfAttention_Conv2D(keras.layers.Layer):
             return o, context
         else:
             return o
+            return o
+    def get_config(self):
+        base_config = super().get_config()
+        return {**base_config, 'gamma':self.gamma, 'f':self.f, 'g':self.g, 'h':self.h, 'v':self.v,
+               'attention':self.activation, 'num_heads':self.num_heads, 'c':self.c,'activation':tf.keras.activations.serialize(self.activation),
+               'scores':self.scores}
