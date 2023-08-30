@@ -54,7 +54,7 @@ class SelfAttention_Conv2D(keras.layers.Layer):
             return o, context
         else:
             return o
-            return o
+        
     def get_config(self):
         base_config = super().get_config()
         return {**base_config, 'gamma':self.gamma, 'f':self.f, 'g':self.g, 'h':self.h, 'v':self.v,
